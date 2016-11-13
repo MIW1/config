@@ -1,82 +1,93 @@
 [user]
-	email = email@example.com
+    email = email@example.com
     name  = MIW
 [push]
-	default = simple
+    default = simple
 
 # global gitignore file where you put extensions to hide from git, like *.bak
 [core]
-	excludesfile = ~/.gitignore
-	excludesfile = *.pyc
+    excludesfile = ~/.gitignore
+    excludesfile = *.pyc
 
 # make git commands show colors
 [color]
-	ui = auto
-	diff = auto
-	status = auto
-	branch = auto
-	interactive = auto
+    ui = auto
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
 
 # diff & merge, optional -- git will use whatever is available
 [diff]
-	# python wrapper to sort the arguments from git to meld
-	#external = /home/miw/git_meld.sh
-	#external = /home/miw/git_gvimdiff.sh
-	#external = gvimdiff
-	tool = gvimdiff
+    # python wrapper to sort the arguments from git to meld
+    external = /home/miw/git_meld.sh
+    #tool = gvimdiff
 [merge]
-	tool = gvimdiff
+    tool = gvimdiff
 [mergetool]
-	prompt = false
-	conflictstyle = gvimdiff
-	# NOTE: kdiff3 has a .orig backup setting of its own that should be disabled too
-	keepBackup = false
+    prompt = false
+    conflictstyle = gvimdiff
+    # NOTE: kdiff3 has a .orig backup setting of its own that should be disabled too
+    keepBackup = false
 
 [alias]
-	# "git s" is the same as "git status", and so on
-	a    = add
-	s    = status
-	st   = status
-	sta  = status
-	stat = status
-	c    = checkout
-	ch   = checkout
+    # "git s" is the same as "git status", and so on
+    a    = add
+    s    = status
+    st   = status
+    sta  = status
+    stat = status
+    c    = checkout
+    ch   = checkout
     cho  = checkout
-	co   = commit
-	com  = commit
-	b    = branch
-	br   = branch
-	bra  = branch
-	d    = difftool
-	dt   = !git difft
+    co   = commit
+    com  = commit
+    b    = branch
+    br   = branch
+    bra  = branch
+    d    = difftool
+    dt   = !git difft
 
-	# sometimes it's nice to just do a quick text diff, not using meld (or other graphical tool)
-	difft = diff --no-ext-diff
-	# compact git log with relative time and usernames
-	l = log -5 --branches --pretty=format:'%h -%d %s  (%cn %cr)'
-	# compact git log with relative time and usernames, full log (not just latest X posts)
-	lf = log --branches --pretty=format:'%h -%d %s  (%cn %cr)'
-	# compact abbrev log for easy browsing of history
-	la = log --stat --abbrev-commit
+    # sometimes it's nice to just do a quick text diff, not using meld (or other graphical tool)
+    difft = diff --no-ext-diff
+    # compact git log with relative time and usernames
+    l = log -5 --branches --pretty=format:'%h -%d %s  (%cn %cr)'
+    # compact git log with relative time and usernames, full log (not just latest X posts)
+    lf = log --branches --pretty=format:'%h -%d %s  (%cn %cr)'
+    # compact abbrev log for easy browsing of history
+    la = log --stat --abbrev-commit
     # shows revision tree in console
     tre = log --branches --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph -8
     # show full revision tree in console
     tref = log --branches --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph
 
 
-	# take back files from stage area: git unstage <optional file or everything>
-	unstage = reset HEAD
+    # take back files from stage area: git unstage <optional file or everything>
+    unstage  = reset HEAD
 
-	# create local branch and check it out: git mkbranch bug123
-	mkbranch = checkout -b
-	mkbr     = !git mkbranch
+    # create local branch and check it out: git mkbranch bug123
+    mkbranch = checkout -b
+    mkbr     = !git mkbranch
 
-	# remove local branch: git rmbranch bug123
-	rmbranch = branch -d
-	rmbr     = !git rmbranch
+    # remove local branch: git rmbranch bug123
+    rmbranch = branch -d
+    rmbr     = !git rmbranch
 
-	# quick rebase options
-	devreb = rebase develop
+    # quick rebase options
+    devreb  = rebase develop
+    ireb    = rebase -i
 
-	# pull and rebase - avoid all those merge commits.
-	pu = pull --rebase
+    # pull and rebase - avoid all those merge commits.
+    pu      = pull --rebase
+
+    # merge without fastforward
+    mnff    = merge --no-ff
+
+    # clean up remote branches
+    bclean  = remote update origin --prune
+
+    # push a branch to remote and set the upstream
+    pub     = push -u origin
+
+    # diff against branchpoint from develop
+    ddev    = diff develop...

@@ -1,0 +1,29 @@
+.
+├── autoload
+│   └── pathogen.vim
+├── bundle
+│   ├── ctrlp.vim
+│   ├── emmet-vim
+│   ├── jedi-vim
+│   ├── nerdtree
+│   ├── syntastic
+│   ├── vim-airline
+│   ├── vim-airline-themes
+│   └── vim-colors-solarized
+├── colors
+│   ├── BusyBee.vim
+│   ├── molokai.vim
+│   └── solarized.vim
+├── ftplugin
+│   ├── html.vim
+│   └── python
+├── indent
+│   └── python.vim
+├── plugin
+│   └── yankring.vim
+└── syntax
+    ├── less.vim
+    ├── python.vim
+    └── scss.vim
+
+16 directories, 10 files

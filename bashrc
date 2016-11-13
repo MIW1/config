@@ -188,6 +188,12 @@ alias gco=gitCommit
 alias gb='git branch'
 alias gs='git status'
 alias gl='git tre'
+alias glf='git tref'
 alias ga='git add'
 alias gch='git checkout'
 alias gs='git status'
+alias gd='git diff'
+#alias djangoserver='killall python; ./manage runserver &'
+
+# Show me what I did on this branch since last demo. Put a ISO-formated date after command e.g. 2014-06-11.
+alias whatDidIDoSince='git log --author="`git config user.name`" --no-merges --format="%Cblue%h %Cgreen%B" --after'

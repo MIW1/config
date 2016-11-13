@@ -20,11 +20,12 @@ set incsearch
 set showmatch
 
 " Font and colors
+" set guifont=ProFontWindows\ 10
 set noanti
 
 " Note: this is only used as a fallback for command line vim, see .gvimrc to
 " change colortheme in gvim.
-" colorscheme molokai
+colorscheme molokai
 
 syntax on
 filetype on
@@ -71,9 +72,10 @@ imap <C-s> :w<Cr>i
 imap jj <Esc>
 imap aa <Esc>
 
-" Move to beginning and start of line faster (Shift-3 and Shift-4)
-map # ^
-map ¤ $
+" Smart home - Got to first non-blank character. Unless already there, then go
+"              to start of line instead
+noremap <expr> <silent> <Home> col('.') == match(getline('.'),'\S')+1 ? '0' : '^'
+imap <silent> <Home> <C-O><Home>
 
 " Force save with sudo by using :w!!
 cmap w!! w !sudo tee % >/dev/null
@@ -108,12 +110,6 @@ au! BufRead,BufNewFile *.scss setfiletype scss
 " Less
 au BufNewFile,BufRead *.less set filetype=less
 
-" JBC
-autocmd BufNewFile,BufRead /home/ludw/code/jbc/* set makeprg=/home/ludw/code/jbc/tests.sh | compiler pyunit
-
-" Zen coding for HTML
-let g:user_zen_leader_key = '<c-e>'
-
 " Improve completion menu
 set completeopt=longest,menuone
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -134,11 +130,8 @@ set tags=~/.vim/ctags
 " Other Key mappings
 nmap <F1> :!ctags -R --languages=python -o ~/.vim/ctags `pwd`
 nmap <F2> :NERDTreeToggle<CR>
-nmap <F3> :MakeGreen<CR>
 nmap <F4> :Gstatus<CR>
 " nmap <F5> :Git push
-" nmap <F6> :!fab -R dev deploy
-" nmap <F7> :!fab -R live deploy
 
 " Yankring on F11, let's you paste stuff you copied earlier
 nmap <silent> <F11> :YRShow<CR>
@@ -170,3 +163,6 @@ set exrc
 " Turn off the colored line, 80 char line, that started showing up after some update.
 set colorcolumn=0
 set cc=0
+
+" Yankring history directory
+let g:yankring_history_dir = "~/.vim_yankring_history"
