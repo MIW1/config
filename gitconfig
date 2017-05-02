@@ -20,7 +20,7 @@
 # diff & merge, optional -- git will use whatever is available
 [diff]
     # python wrapper to sort the arguments from git to meld
-    external = /home/miw/git_meld.sh
+    external = ~/.git-meld.py
     #tool = gvimdiff
 [merge]
     tool = gvimdiff

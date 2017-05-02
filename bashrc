@@ -197,3 +197,6 @@ alias gd='git diff'
 
 # Show me what I did on this branch since last demo. Put a ISO-formated date after command e.g. 2014-06-11.
 alias whatDidIDoSince='git log --author="`git config user.name`" --no-merges --format="%Cblue%h %Cgreen%B" --after'
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This load nvm -- nodejs environment switcher.

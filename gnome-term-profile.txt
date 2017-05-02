@@ -1,8 +1,0 @@
-No good way to store profiles for gnome terminal.
-Settings-tools used may differ between versions,
-safer and easier to reconstruct than try to script.
-
-Font: Source Code Pro for Powerline Regular   11
-
-Colors: Black background, Text color #E5E5E5.
-        Palette "Linux console".
