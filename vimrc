@@ -166,3 +166,6 @@ set cc=0
 
 " Yankring history directory
 let g:yankring_history_dir = "~/.vim_yankring_history"
+
+" Ctrl-P ignore these directories
+let g:ctrlp_custom_ignore = "node_modules"
