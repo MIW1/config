@@ -11,7 +11,6 @@ Symlink = namedtuple('Symlink', ['source', 'dest'])
 Download = namedtuple('Download', ['url', 'dest'])
 Gitrepo = namedtuple('Gitrepo', ['url', 'reponame', 'sha'])
 symlinks = [
-MÅSTE FIXA CONFIGEN SÅ ATT git-meld-SYMLÄNKEN FUNKAR, UPPDATERA gitconfig!
 OCH FIXA SYNTAX-HIGHLIGHTING I TERMINAL-VIN!
     Symlink(source='bashrc', dest='~/.bashrc'),
     Symlink(source='gitconfig', dest='~/.gitconfig'),
@@ -39,6 +38,13 @@ FIXA SÅ JAG KLONAR GIT-REPON TILL BRA-STÄLLE<tm>
             reponame='powerline_fonts.git',
             sha='b0abc65f621eba332002cba88b49d50e99a126f9')
 ]
+
+# TODO Make script part taking user input and addeding it to localsettingsfolder.
+#      also create that folder and then symlink it.
+
+
+# XXX Idea: Install apt-stuff if it's a ubuntu machine?
+#     Perhaps just output a .apt-line from a file?
 
 # XXX anything more to do?
 # TODO config changes, such as insert git email & username, more stuff?
