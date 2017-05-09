@@ -1,11 +1,12 @@
-[user]
-    email = email@example.com
-    name  = MIW
+[include]
+    path = ~/.localsettings/git_user  # Contains user settings
+
 [push]
-    default = simple
+    default = current
 
 # global gitignore file where you put extensions to hide from git, like *.bak
 [core]
+    pager = less -FX
     excludesfile = ~/.gitignore
     excludesfile = *.pyc
 
@@ -22,8 +23,10 @@
     # python wrapper to sort the arguments from git to meld
     external = ~/.git-meld.py
     #tool = gvimdiff
-[merge]
-    tool = gvimdiff
+[difftool]
+    prompt = false
+#[merge]
+#    tool = gvimdiff
 [mergetool]
     prompt = false
     conflictstyle = gvimdiff
@@ -72,6 +75,8 @@
     # remove local branch: git rmbranch bug123
     rmbranch = branch -d
     rmbr     = !git rmbranch
+    # remove remote branch
+    rmbrr    = push origin --delete
 
     # quick rebase options
     devreb  = rebase develop
