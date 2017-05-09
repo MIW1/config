@@ -7,6 +7,11 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 # Enable virtualenvwrapper
 source /usr/local/bin/virtualenvwrapper.sh
 
+# Node version manager.
+# https://github.com/creationix/nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This load nvm
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
@@ -73,9 +78,12 @@ HYPHEN_INSENSITIVE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions pip django)
+plugins=(git zsh-autosuggestions pip django pass)
 
 source $ZSH/oh-my-zsh.sh
+
+# Prevent Python from writing bytecode (.pyc) files.
+export PYTHONDONTWRITEBYTECODE=pretty_please
 
 # User configuration
 
@@ -102,11 +110,11 @@ alias jobs='jobs -l'
 PROJ='/home/miw/projects'
 alias proj='cd $PROJ'
 
-# Django testing shortcut
-# Standard test case - Run unit tests, fail fast and skip stylechecks
-alias dt='tests.py --stop --nostyle --unittests'
-# Run everything (except selenium, unless those are requested ofc)
-alias dta='tests.py'
+# JSON formatting
+alias jsonformat='python -m json.tool'
+
+# Pytest with last-failed option (run last failed tests, or all of them if none failed last run).
+alias ptlf='pytest --last-failed'
 
 # Misc git shortcuts
 alias gmb='git mkbranch'
@@ -152,15 +160,17 @@ alias pr=switchToProject
 
 # Search in python files, annoying to have to write so much
 pythonFind() {
-	grep -r --include=*.py --exclude-dir=migrations --exclude-dir=tests --exclude=tests.py --line-number "$@" .
+	grep -r --include='*.py' --exclude-dir='migrations' --exclude-dir='tests' --exclude-dir='node_modules' --exclude-dir='.tox' --exclude='tests.py' --line-number "$@" .
 }
 pythonFindIncludeTests() {
-	grep -r --include=*.py --exclude-dir=migrations --line-number "$@" .
+	grep -r --include='*.py' --exclude-dir='migrations' --exclude-dir='node_modules' --exclude-dir='.tox' --line-number "$@" .
 }
 pythonAndHtmlFind() {
-	grep -r --include=*.py --include=*.html --exclude-dir=migrations --exclude-dir=tests --exclude=tests.py --line-number "$@" .
+	grep -r --include='*.py' --include='*.html' --exclude-dir='migrations' --exclude-dir='tests' --exclude-dir='node_modules' --exclude-dir='.tox' --exclude='tests.py' --line-number "$@" .
 }
 alias pf=pythonFind
 alias pft=pythonFindIncludeTests
 alias pfh=pythonAndHtmlFind
 
+# Fix dependencies-script, supports multiple project folder structures and also can relink external egg dependencies.
+alias smurf=~/.dependency_fiddling.py
