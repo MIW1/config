@@ -5,13 +5,15 @@ import logging
 import os
 from collections import namedtuple
 
-
 ### Configuration
 Symlink = namedtuple('Symlink', ['source', 'dest'])
 Download = namedtuple('Download', ['url', 'dest'])
 Gitrepo = namedtuple('Gitrepo', ['url', 'reponame', 'sha'])
+
+LOCALSETTINGS = 'localsettings'
+DOWNLOADS_AND_GITREPOS = 'download_and_gitrepos'
+
 symlinks = [
-OCH FIXA SYNTAX-HIGHLIGHTING I TERMINAL-VIN!
     Symlink(source='bashrc', dest='~/.bashrc'),
     Symlink(source='gitconfig', dest='~/.gitconfig'),
     Symlink(source='git-meld.py', dest='~/.git-meld.py'),
@@ -19,6 +21,8 @@ OCH FIXA SYNTAX-HIGHLIGHTING I TERMINAL-VIN!
     Symlink(source='vimrc', dest='~/.vimrc'),
     Symlink(source='zshrc', dest='~/.zshrc'),
     Symlink(source='zshrc.zni', dest='~/.zshrc.zni'),
+    Symlink(source=LOCALSETTINGS, dest='~/.localsettings'),
+    Symlink(source=DOWNLOADS_AND_GITREPOS+'/powerline_fonts.git', dest='~/.powerlinefonts'),
 
     # Symlink(source='gnome-term-profile.txt', dest='~/    <- this files content should be added to README.md
     # Symlink(source='install.py', dest='~/
@@ -33,15 +37,18 @@ downloads = [
 ]
 git_repos = [
 NÄSTA GÅNG FORTSÄTT HÄR.
-FIXA SÅ JAG KLONAR GIT-REPON TILL BRA-STÄLLE<tm>
+PLOCKA NED ALLA GIT-PLUGINS SOM BEHÖVS, BÖRJA MED ATT GÖRA DET TILL NÅGON TEMP-KATALOG OCH INTE
+DIT DE FAKTISKT SKA. FÖR DEBUG-SYFTE.
     Gitrepo(url='https://github.com/powerline/fonts.git',
             reponame='powerline_fonts.git',
             sha='b0abc65f621eba332002cba88b49d50e99a126f9')
 ]
 
+
 # TODO Make script part taking user input and addeding it to localsettingsfolder.
 #      also create that folder and then symlink it.
 
+# TODO move the dependency-fiddling-script to this machine, also symlink it.
 
 # XXX Idea: Install apt-stuff if it's a ubuntu machine?
 #     Perhaps just output a .apt-line from a file?
@@ -87,6 +94,7 @@ def main(args):
     else:
         uninstall()
 
+
 def parseargs():
     parser = argparse.ArgumentParser(description='Install & uninstall script for these settings files.')
 
@@ -100,7 +108,20 @@ def parseargs():
 
     return parser.parse_args()
 
+
 def install():
+    if not os.path.exists(LOCALSETTINGS):
+        log.debug('Creating localsettings folder "{dir}".'.format(dir=LOCALSETTINGS))
+        os.mkdir(LOCALSETTINGS)
+    else:
+        log.debug('Localsettings folder "{dir}" exists, skipping creation.'.format(dir=LOCALSETTINGS))
+
+    if not os.path.exists(DOWNLOADS_AND_GITREPOS):
+        log.debug('Creating downloads_and_gitrepos folder "{dir}".'.format(dir=DOWNLOADS_AND_GITREPOS))
+        os.mkdir(DOWNLOADS_AND_GITREPOS)
+    else:
+        log.debug('Downloads_and_gitrepos folder "{dir}" exists, skipping creation.'.format(dir=DOWNLOADS_AND_GITREPOS))
+
     log.debug('Creating symlinks.')
     cwd = os.getcwd()
     for symlink in symlinks:
@@ -113,8 +134,15 @@ def install():
             os.symlink(src, dst)
     log.debug('All symlinks created.')
 
+
 def uninstall():
     log.debug('Deleting symlinks.')
+
+    # TODO ask user if the localsettingsfolder & downloadsfolder should be deleted also? Or kill it, unless asked to keep it?
+    if os.path.exists(LOCALSETTINGS):
+        log.info('Deleting {dir} including its content'.format(dir=LOCALSETTINGS))
+    if os.path.exists(DOWNLOADS_AND_GITREPOS):
+        log.info('Deleting {dir} including its content'.format(dir=DOWNLOADS_AND_GITREPOS))
 
     for symlink in symlinks:
         link = os.path.expanduser(symlink.dest)
@@ -125,6 +153,7 @@ def uninstall():
             log.warning('Could not delete {link}, file not found'.format(link=link))
     log.debug('All symlinks deleted.')
 
+
 if __name__ == '__main__':
     args = parseargs()
 
@@ -132,5 +161,5 @@ if __name__ == '__main__':
     logformat = '%(levelname)s:%(message)s'
     logging.basicConfig(level=loglevel, format=logformat)
     log = logging.getLogger(__name__)
-    
+
     main(args)
