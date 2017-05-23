@@ -174,3 +174,4 @@ alias pfh=pythonAndHtmlFind
 
 # Fix dependencies-script, supports multiple project folder structures and also can relink external egg dependencies.
 alias smurf=~/.dependency_fiddling.py
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

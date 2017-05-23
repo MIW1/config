@@ -223,6 +223,12 @@ def install():
     _clone_gitrepos()
 
     #_create_symlinks()
+    NÄSTA GÅNG.
+    PEKA UT EN FAKAD .vim-katalog.
+    FIXA SÅ ALLA KATALOGER I VIM-KATALOG-TUPLEN SKAPAS UPP.
+    DÄREFTER SYMLÄNKA IN ALLA REPON.
+    GÖR EN VALIDERING ATT vim LÄSER SYMLÄNKAR KORREKT. DÄREFTER RÄDDA BARA UNDAN ORIGINALKATALOGERNA OCH
+    BÖRJA MEKA DÄRIFRÅN.
 
 
 def _create_folders():
@@ -272,10 +278,13 @@ def _clone_gitrepos():
     log.debug('Saved CWD {cwd}'.format(cwd=orig_cwd))
     for url, reponame, sha, dest in git_repos:
         os.chdir(orig_cwd)  # Reset every passthrough
+        log.debug('Restored CWD {cwd}'.format(cwd=orig_cwd))
         destexpanded = os.path.expanduser(dest)
         path = os.path.join(destexpanded, reponame)
         if not os.path.exists(path):
             os.chdir(destexpanded)
+            log.debug('cd {cwd}'.format(cwd=destexpanded))
+
             cmd = 'git clone {url} {name}'.format(url=url, name=reponame)
             log.info(cmd)
             subprocess.call(cmd, shell=True)
