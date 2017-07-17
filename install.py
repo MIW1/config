@@ -109,17 +109,6 @@ symlinks = [
             dest='{vimpath}/syntax/python.vim'.format(vimpath=DOT_VIM_PATH)),
 ]
 
-#git_symlinks = [  # All these sources are prepended with: DOWNLOADS_AND_GITREPOS + "/"
-#    Symlink(source=PATHOGEN_VIM + '/', dest=),
-#    # Symlink(source='gnome-term-profile.txt', dest='~/    <- this files content should be added to README.md
-#    # Symlink(source='install.py', dest='~/
-#    # Symlink(source='miw_base.zsh-theme', dest='~/
-#    # Symlink(source='miw.zsh-theme', dest='~/
-#    # Symlink(source='README.md', dest='~/
-#    # Symlink(source='show_256_colors.sh', dest='~/
-#    # Symlink(source='vim_plugins.txt', dest='~/
-#]
-
 #copyactions = [
 #    Copy(source=PATHOGEN_VIM, dest=),
 #    Copy(source=, dest=),
@@ -332,24 +321,27 @@ def _download_files():
 
 def _clone_gitrepos():
     """Clone gitrepos and check out specified sha. If repo already exists nothing happens."""
-    orig_cwd = os.getcwd()
-    log.debug('Saved CWD {cwd}'.format(cwd=orig_cwd))
     for url, reponame, sha, dest in git_repos:
-        os.chdir(orig_cwd)  # Reset every passthrough
-        log.debug('Restored CWD {cwd}'.format(cwd=orig_cwd))
         destexpanded = os.path.expanduser(dest)
         path = os.path.join(destexpanded, reponame)
+        # git clone part
         if not os.path.exists(path):
-            os.chdir(destexpanded)
-            log.debug('cd {cwd}'.format(cwd=destexpanded))
-
             cmd = 'git clone {url} {name}'.format(url=url, name=reponame)
             log.info(cmd)
-            subprocess.call(cmd, shell=True)
+            subprocess.call(cmd, shell=True, cwd=destexpanded)
         else:
             log.info('Folder {path} exits, no new cloning of {repo}'.format(path=path, repo=url))
-    os.chdir(orig_cwd)
-    log.debug('Restored CWD {cwd}'.format(cwd=orig_cwd))
+        # git checkout part
+        current_sha = subprocess.check_output('git log --pretty=format:%H -n1', shell=True, cwd=path)
+        current_sha = current_sha.decode('utf-8')
+        if current_sha != sha:
+            log.debug("{repo} current {current_sha} != requested {requested_sha}, doing git checkout to fix.".format(
+                repo=path, current_sha=current_sha, requested_sha=sha))
+            subprocess.call('git checkout {commitish}'.format(commitish=sha), shell=True, cwd=path, stdout=subprocess.DEVNULL,
+                           stderr=subprocess.DEVNULL)
+        else:
+            log.debug("{repo} current {current_sha} == requested {requested_sha}, do nothing.".format(
+                repo=path, current_sha=current_sha, requested_sha=sha))
 
 
 def _create_symlinks():
