@@ -22,6 +22,8 @@ USER_HOME = 'testfolder'  # Exists so it's easy to test everything and install i
 LOCALSETTINGS = 'localsettings'
 DOWNLOADS_AND_GITREPOS = 'downloads_and_gitrepos'
 
+LOCALSETTINGS_GITUSER = '{localsettings}/git_user'.format(localsettings=LOCALSETTINGS)
+
 DOT_VIM_PATH = '%s/dotvim' % USER_HOME  # ~/.vim for real use
 DOT_VIM_FOLDERS = (
     'autoload',
@@ -122,7 +124,6 @@ downloads = [  # wget "URL" -O filename
     Download(url='https://gist.githubusercontent.com/bryanjswift/161047/raw/ef495b2a734058b1e45f63f2e8dec1f314ae8f14/less.vim',
              filename=LESS_SYNTAX_VIM,
              dest=DOWNLOADS_AND_GITREPOS),
-    
 ]
 
 git_repos = [
@@ -180,12 +181,22 @@ git_repos = [
             dest=DOWNLOADS_AND_GITREPOS),
 ]
 
+NÄSTA GÅNG:
+    Fixa de vim-grejer som saknas. jämför testfolder och .vim.
+    tree -L 2
+
+    Efter det är det nog dags att verifiera att allt jag gjort hittills funkar bra.
+    Dvs kopiera undan det som ska säkerhetskopieras, och sedan kör uninstall följt av install.
+    Om allt sånt funkar har jag ju en MVP igång.
+
+    Sedan är det väl att fortsätta beta av saker härifrån listan.
+    Uppdatera enkelt vore sjukt smidigt.
+
+    Att se över om inte det är några fler lokala settings (det som nämns i doc-strängen nedan) är också på sin plats.
+
 # TODO Make a script that goes through all git-repos and updates them, and syncs new sha:s to the repo config.
 #      That way it's easy to keep things up-to-date, and there's a log of what things has been updated.
 #      Probably good to make as an option, "install" / "uninstall" / "gitupdates".
-
-# TODO Make script part taking user input and addeding it to localsettingsfolder.
-#      also create that folder and then symlink it.
 
 # TODO move the dependency-fiddling-script to this machine, also symlink it.
 
@@ -302,8 +313,15 @@ def _create_folders():
 
 
 def _create_localsettings():
-    # TODO input to store GIT user data
-    pass
+    if not os.path.exists(LOCALSETTINGS_GITUSER):
+        name = input("git setting user.name: ")
+        email = input("git setting user.email: ")
+        with open(LOCALSETTINGS_GITUSER, "w") as f:
+            f.write("[user]\n")
+            f.write("    name = {name}\n".format(name=name))
+            f.write("    email = {email}".format(email=email))
+    else:
+        log.info('Settings file {file} exists, not querying user for data.'.format(file=LOCALSETTINGS_GITUSER))
 
 
 def _download_files():
@@ -364,8 +382,10 @@ def uninstall():
     # TODO ask user if the localsettingsfolder & downloadsfolder should be deleted also? Or kill it, unless asked to keep it?
     if os.path.exists(LOCALSETTINGS):
         log.info('Deleting {dir} including its content'.format(dir=LOCALSETTINGS))
+        shutil.rmtree(LOCALSETTINGS)
     if os.path.exists(DOWNLOADS_AND_GITREPOS):
         log.info('Deleting {dir} including its content'.format(dir=DOWNLOADS_AND_GITREPOS))
+        shutil.rmtree(DOWNLOADS_AND_GITREPOS)
 
     for symlink in symlinks:
         link = os.path.expanduser(symlink.dest)
