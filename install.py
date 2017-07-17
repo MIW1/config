@@ -8,15 +8,21 @@ import subprocess
 import urllib.request
 from collections import namedtuple
 
+def strip_dotgit(reponame):
+    """Remove/strip the .git part from a repo name"""
+    return os.path.basename(reponame)
+
 ### Configuration
 Symlink = namedtuple('Symlink', ['source', 'dest'])
 Copy = namedtuple('Copy', ['source', 'dest'])
 Download = namedtuple('Download', ['url', 'filename', 'dest'])
 Gitrepo = namedtuple('Gitrepo', ['url', 'reponame', 'sha', 'dest'])
 
+USER_HOME = 'testfolder'  # Exists so it's easy to test everything and install it in another folder than "~/" when developing.
 LOCALSETTINGS = 'localsettings'
 DOWNLOADS_AND_GITREPOS = 'downloads_and_gitrepos'
 
+DOT_VIM_PATH = '%s/dotvim' % USER_HOME  # ~/.vim for real use
 DOT_VIM_FOLDERS = (
     'autoload',
     'bundle',
@@ -39,37 +45,72 @@ AIRLINE_THEMES_VIM = 'vim-airline-themes.git'
 COLORS_SOLARIZED_VIM = 'vim-colors-solarized.git'
 COLORSCHEMES_VIM = 'vim-colorschemes.git'
 PYTHON_SYNTAX_VIM = 'python-syntax.git'
+PYTHON_INDENT_VIM = 'python-indent.vim'
+LESS_SYNTAX_VIM = 'less-syntax.vim'
 
 symlinks = [
     Symlink(source='bashrc',
-            dest='~/.bashrc'),
+            dest='{home}/.bashrc'.format(home=USER_HOME)),
     Symlink(source='gitconfig',
-            dest='~/.gitconfig'),
+            dest='{home}/.gitconfig'.format(home=USER_HOME)),
     Symlink(source='git-meld.py',
-            dest='~/.git-meld.py'),
+            dest='{home}/.git-meld.py'.format(home=USER_HOME)),
     Symlink(source='gvimrc',
-            dest='~/.gvimrc'),
+            dest='{home}/.gvimrc'.format(home=USER_HOME)),
     Symlink(source='vimrc',
-            dest='~/.vimrc'),
+            dest='{home}/.vimrc'.format(home=USER_HOME)),
     Symlink(source='zshrc',
-            dest='~/.zshrc'),
+            dest='{home}/.zshrc'.format(home=USER_HOME)),
     Symlink(source='zshrc.zni',
-            dest='~/.zshrc.zni'),
+            dest='{home}/.zshrc.zni'.format(home=USER_HOME)),
 
     Symlink(source=LOCALSETTINGS,
-            dest='~/.localsettings'),
+            dest='{home}/.localsettings'.format(home=USER_HOME)),
 
-    Symlink(source=DOWNLOADS_AND_GITREPOS + "/" + POWERLINE_FONTS,
-            dest='~/.powerlinefonts'),
+    Symlink(source='{download}/{pythonindent}'.format(download=DOWNLOADS_AND_GITREPOS, pythonindent=PYTHON_INDENT_VIM),
+            dest='{vimpath}/indent/python.vim'.format(vimpath=DOT_VIM_PATH)),
+    Symlink(source='{download}/{lesssyntax}'.format(download=DOWNLOADS_AND_GITREPOS, lesssyntax=LESS_SYNTAX_VIM),
+            dest='{vimpath}/syntax/less.vim'.format(vimpath=DOT_VIM_PATH)),
+
+    # XXX Perhaps extend the gitrepo-tuples with symlink data, to keep all config for a gitrepo together.
+
+    Symlink(source='{downloads}/{powerlinerepo}'.format(downloads=DOWNLOADS_AND_GITREPOS, powerlinerepo=POWERLINE_FONTS),
+            dest='{home}/.powerlinefonts'.format(home=USER_HOME)),
+
+    Symlink(source='{downloads}/{colorschemesrepo}/colors/molokai.vim'.format(downloads=DOWNLOADS_AND_GITREPOS,
+                                                                              colorschemesrepo=COLORSCHEMES_VIM),
+            dest='{vimpath}/colors/molokai.vim'.format(vimpath=DOT_VIM_PATH)),
+    Symlink(source='{downloads}/{colorschemesrepo}/colors/solarized.vim'.format(downloads=DOWNLOADS_AND_GITREPOS,
+                                                                                colorschemesrepo=COLORSCHEMES_VIM),
+            dest='{vimpath}/colors/solarized.vim'.format(vimpath=DOT_VIM_PATH)),
+
+    Symlink(source='{downloads}/{pathogenrepo}/autoload/pathogen.vim'.format(downloads=DOWNLOADS_AND_GITREPOS, pathogenrepo=PATHOGEN_VIM),
+            dest='{vimpath}/autoload/pathogen.vim'.format(vimpath=DOT_VIM_PATH)),
+
+    Symlink(source='{downloads}/{solarizedrepo}'.format(downloads=DOWNLOADS_AND_GITREPOS, solarizedrepo=COLORS_SOLARIZED_VIM),
+            dest='{vimpath}/bundle/{solarizedvim}'.format(vimpath=DOT_VIM_PATH, solarizedvim=strip_dotgit(COLORS_SOLARIZED_VIM))),
+    Symlink(source='{downloads}/{ctrlprepo}'.format(downloads=DOWNLOADS_AND_GITREPOS, ctrlprepo=CTRLP_VIM),
+            dest='{vimpath}/bundle/{ctrlp}'.format(vimpath=DOT_VIM_PATH, ctrlp=strip_dotgit(CTRLP_VIM))),
+    Symlink(source='{downloads}/{emmetrepo}'.format(downloads=DOWNLOADS_AND_GITREPOS, emmetrepo=EMMET_VIM),
+            dest='{vimpath}/bundle/{emmetvim}'.format(vimpath=DOT_VIM_PATH, emmetvim=strip_dotgit(EMMET_VIM))),
+    Symlink(source='{downloads}/{jedirepo}'.format(downloads=DOWNLOADS_AND_GITREPOS, jedirepo=JEDI_VIM),
+            dest='{vimpath}/bundle/{jedivim}'.format(vimpath=DOT_VIM_PATH, jedivim=strip_dotgit(JEDI_VIM))),
+    Symlink(source='{downloads}/{nerdtreerepo}'.format(downloads=DOWNLOADS_AND_GITREPOS, nerdtreerepo=NERDTREE_VIM),
+            dest='{vimpath}/bundle/{nerdtreevim}'.format(vimpath=DOT_VIM_PATH, nerdtreevim=strip_dotgit(NERDTREE_VIM))),
+    Symlink(source='{downloads}/{syntasticrepo}'.format(downloads=DOWNLOADS_AND_GITREPOS, syntasticrepo=SYNTASTIC_VIM),
+            dest='{vimpath}/bundle/{syntasticvim}'.format(vimpath=DOT_VIM_PATH, syntasticvim=strip_dotgit(SYNTASTIC_VIM))),
+    Symlink(source='{downloads}/{airlinerepo}'.format(downloads=DOWNLOADS_AND_GITREPOS, airlinerepo=AIRLINE_VIM),
+            dest='{vimpath}/bundle/{airlinevim}'.format(vimpath=DOT_VIM_PATH, airlinevim=strip_dotgit(AIRLINE_VIM))),
+    Symlink(source='{downloads}/{airline_themesrepo}'.format(downloads=DOWNLOADS_AND_GITREPOS, airline_themesrepo=AIRLINE_THEMES_VIM),
+            dest='{vimpath}/bundle/{airline_themesvim}'.format(vimpath=DOT_VIM_PATH, airline_themesvim=strip_dotgit(AIRLINE_THEMES_VIM))),
+
+    Symlink(source='{downloads}/{pythonsyntax}/syntax/python.vim'.format(downloads=DOWNLOADS_AND_GITREPOS,
+                                                                                           pythonsyntax=PYTHON_SYNTAX_VIM),
+            dest='{vimpath}/syntax/python.vim'.format(vimpath=DOT_VIM_PATH)),
 ]
 
 #git_symlinks = [  # All these sources are prepended with: DOWNLOADS_AND_GITREPOS + "/"
 #    Symlink(source=PATHOGEN_VIM + '/', dest=),
-#    Symlink(source=, dest=),
-#    Symlink(source=, dest=),
-#    Symlink(source=, dest=),
-#    Symlink(source=, dest=),
-#    Symlink(source=, dest=),
 #    # Symlink(source='gnome-term-profile.txt', dest='~/    <- this files content should be added to README.md
 #    # Symlink(source='install.py', dest='~/
 #    # Symlink(source='miw_base.zsh-theme', dest='~/
@@ -85,21 +126,22 @@ symlinks = [
 #    Copy(source=, dest=),
 #    Copy(source=, dest=),
 #]
-downloads = [
+downloads = [  # wget "URL" -O filename
     Download(url='http://www.vim.org/scripts/download_script.php?src_id=4316',
-             filename='python.vim',  # wget "URL" -O filename
+             filename=PYTHON_INDENT_VIM,
              dest=DOWNLOADS_AND_GITREPOS),
+    Download(url='https://gist.githubusercontent.com/bryanjswift/161047/raw/ef495b2a734058b1e45f63f2e8dec1f314ae8f14/less.vim',
+             filename=LESS_SYNTAX_VIM,
+             dest=DOWNLOADS_AND_GITREPOS),
+    
 ]
 
 git_repos = [
+    # These are symlinked to .vim/bundle
     Gitrepo(url='https://github.com/powerline/fonts.git',
             reponame=POWERLINE_FONTS,
             sha='b0abc65f621eba332002cba88b49d50e99a126f9',
             dest=DOWNLOADS_AND_GITREPOS),
-    Gitrepo(url='https://github.com/tpope/vim-pathogen.git',
-            reponame=PATHOGEN_VIM,
-            sha='379b8f70822c4a89370575c3967f33cb116087ea',
-            dest=DOWNLOADS_AND_GITREPOS),  # COPY TO autoload
     Gitrepo(url='https://github.com/ctrlpvim/ctrlp.vim.git',
             reponame=CTRLP_VIM,
             sha='cbd52e3bdd388afd7accaba6e0aea754f32da271',
@@ -131,16 +173,22 @@ git_repos = [
     Gitrepo(url='https://github.com/altercation/vim-colors-solarized.git',
             reponame=COLORS_SOLARIZED_VIM,
             sha='528a59f26d12278698bb946f8fb82a63711eec21',
-            dest=DOWNLOADS_AND_GITREPOS),  # COPY TO bundle
-    # vim-colorschemes.git/colors/molokai.vim, solarized.vim
+            dest=DOWNLOADS_AND_GITREPOS),
+    # Symlinked to  .vim/autoload
+    Gitrepo(url='https://github.com/tpope/vim-pathogen.git',
+            reponame=PATHOGEN_VIM,
+            sha='379b8f70822c4a89370575c3967f33cb116087ea',
+            dest=DOWNLOADS_AND_GITREPOS),
+    # Symlink to .vim/colors: vim-colorschemes.git/colors/molokai.vim, solarized.vim
     Gitrepo(url='https://github.com/flazz/vim-colorschemes.git',
             reponame=COLORSCHEMES_VIM,
             sha='b8dff40f69f1873effbed97c759a8452ecb240ed',
-            dest=DOWNLOADS_AND_GITREPOS),  # COPY TO colors (the files above)
+            dest=DOWNLOADS_AND_GITREPOS),
+    # Symlink to .vim/syntax
     Gitrepo(url='https://github.com/hdima/python-syntax.git',
             reponame=PYTHON_SYNTAX_VIM,
             sha='69760cb3accce488cc072772ca918ac2cbf384ba',
-            dest=DOWNLOADS_AND_GITREPOS),  # COPY TO syntax
+            dest=DOWNLOADS_AND_GITREPOS),
 ]
 
 # TODO Make a script that goes through all git-repos and updates them, and syncs new sha:s to the repo config.
@@ -222,13 +270,17 @@ def install():
 
     _clone_gitrepos()
 
-    #_create_symlinks()
-    NÄSTA GÅNG.
-    PEKA UT EN FAKAD .vim-katalog.
-    FIXA SÅ ALLA KATALOGER I VIM-KATALOG-TUPLEN SKAPAS UPP.
-    DÄREFTER SYMLÄNKA IN ALLA REPON.
-    GÖR EN VALIDERING ATT vim LÄSER SYMLÄNKAR KORREKT. DÄREFTER RÄDDA BARA UNDAN ORIGINALKATALOGERNA OCH
-    BÖRJA MEKA DÄRIFRÅN.
+    _create_symlinks()
+    #NÄSTA GÅNG.
+    #    X PEKA UT EN FAKAD .vim-katalog.
+    #    X FIXA SÅ ALLA KATALOGER I VIM-KATALOG-TUPLEN SKAPAS UPP.
+    #    OBS! Dessa kataloger skall inte kastas bort, de kan råka ta bort en massa annat så de får vara så länge...
+    #        Eller kanske göra en koll sist i avinstalltionen. OM det finns andra filer kvar i en .vim-katalog så tas de inte bort.
+    #        Men om katalogen är tom kan den tas bort.
+    #    X Också gör om "~" till någon bas-setting. så kan jag lättare installera och avinstallera allt i en katalog där jag inte
+    #    X förstör för mig själv.
+    #    X DÄREFTER SYMLÄNKA IN ALLA REPON.
+    #    GÖR EN VALIDERING ATT vim LÄSER SYMLÄNKAR KORREKT. DÄREFTER RÄDDA BARA UNDAN ORIGINALKATALOGERNA OCH
 
 
 def _create_folders():
@@ -252,6 +304,12 @@ def _create_folders():
                        dir=DOWNLOADS_AND_GITREPOS),
                    exists_message='Downloads_and_gitrepos folder "{dir}" exists, skipping creation.'.format(
                        dir=DOWNLOADS_AND_GITREPOS))
+
+    for vimfolder in DOT_VIM_FOLDERS:
+        folder = '{vimpath}/{foldername}'.format(vimpath=DOT_VIM_PATH, foldername=vimfolder)
+        _create_folder(folder=folder,
+                       created_message="Creating vim folder {folder}".format(folder=folder),
+                       exists_message="Vim folder {folder} exists, skipping creation".format(folder=folder))
 
 
 def _create_localsettings():
