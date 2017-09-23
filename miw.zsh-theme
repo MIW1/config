@@ -7,44 +7,10 @@
 # jobs are running in this shell will all be displayed automatically when
 # appropriate.
 
-
-### Color defines
-# These works for all terminals supporint ASCII colors.
-# Including Putty, MobaXTerm etc as well as GnomeTerminal.
-# Using the 'echo "%F{colorcode}..."' variant doesn't work in most terminals.
-prompt_setcolor_reset() {
-	printf "\33[m"
-}
-
-prompt_setcolor_blue() {
-	printf "\33[00;38;5;027m"
-}
-
-prompt_setcolor_green() {
-	printf "\33[00;38;5;040m"
-}
-
-prompt_setcolor_lightblue() {
-	printf "\33[00;38;5;105m"
-}
-
-prompt_setcolor_brown() {
-	printf "\33[00;38;5;130m"
-}
-
-prompt_setcolor_red() {
-	printf "\33[00;38;5;160m"
-}
-
-prompt_setcolor_yellow() {
-	printf "\33[00;38;5;226m"
-}
-
 ### Segment drawing
 # End the prompt, closing any open segments
 prompt_end() {
-	prompt_setcolor_reset
-	echo -n "→"
+  echo -n "%F{white}→"
 }
 
 ### Prompt components
@@ -52,42 +18,75 @@ prompt_end() {
 
 # Context: user@hostname (who am I and where am I)
 prompt_context() {
-	if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-		prompt_setcolor_brown
-		echo -n "$USER@%m"
-	fi
+  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+    echo -n "%(!.%{%F{130}%}.)$USER@%m"
+  fi
 }
 
 # Git: branch/detached head, dirty status
 prompt_git() {
   (( $+commands[git] )) || return
-  local ref repo_path
+  local ref dirty repo_path
   repo_path=$(git rev-parse --git-dir 2>/dev/null)
 
   if $(git rev-parse --is-inside-work-tree >/dev/null 2>&1); then
+    #dirty=$(parse_git_dirty)
     ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
-    prompt_setcolor_green
-    echo -n "["
-    prompt_setcolor_blue
-    echo -n "${ref/refs\/heads\//}"
-    prompt_setcolor_green
-    echo -n "] "
+    #if [[ -n $dirty ]]; then
+    #  prompt_segment yellow black
+    #else
+    #  prompt_segment green black
+    #fi
+    #prompt_segment green black
+    #prompt_segment magenta black
+
+    setopt promptsubst
+    autoload -Uz vcs_info
+
+    zstyle ':vcs_info:*' enable git
+    zstyle ':vcs_info:*' check-for-changes true
+    #zstyle ':vcs_info:*' get-revision true
+    #zstyle ':vcs_info:*' stagedstr '✚'
+    #zstyle ':vcs_info:*' unstagedstr '●'
+    #zstyle ':vcs_info:*' formats ' %u%c'
+    #zstyle ':vcs_info:*' actionformats ' %u%c'
+
+    # from kolo start
+    zstyle ':vcs_info:*' stagedstr '%F{green}●'
+    zstyle ':vcs_info:*' unstagedstr '%F{yellow}●'
+    #zstyle ':vcs_info:*' check-for-changes true
+    #zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{11}%r'
+    #zstyle ':vcs_info:*' enable git svn
+    theme_precmd () {
+        if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
+            zstyle ':vcs_info:*' formats ' [%b%c%u%B%F{green}]'
+        } else {
+            #zstyle ':vcs_info:*' formats ' [%b%c%u%B%F{red}●%F{green}]'
+            zstyle ':vcs_info:*' formats ' [%b%c%u%B%F{red}●%F{magenta}]'
+        }
+
+        vcs_info
+    }
+    autoload -U add-zsh-hook
+    add-zsh-hook precmd  theme_precmd
+    # from kolo end
+
+    vcs_info
+    echo -n "%F{040}[%F{027}${ref/refs\/heads\//}%F{040}] "
   fi
 }
 
 # Dir: current working directory
 prompt_dir() {
-	prompt_setcolor_green
-	echo -n '%~ '
+  echo -n '%F{040}%~ '
 }
 
 # Virtualenv: current working virtualenv
 prompt_virtualenv() {
-	local virtualenv_path="$VIRTUAL_ENV"
-	if [[ -n $virtualenv_path ]]; then
-		prompt_setcolor_yellow
-		echo -n "(`basename $virtualenv_path`) "
-	fi
+  local virtualenv_path="$VIRTUAL_ENV"
+  if [[ -n $virtualenv_path ]]; then
+    echo -n "%F{226}(`basename $virtualenv_path`) "
+  fi
 }
 
 # Status:
@@ -95,14 +94,13 @@ prompt_virtualenv() {
 # - am I root
 # - are there background jobs?
 prompt_status() {
-	local symbols
-	symbols=()
-	[[ $RETVAL -ne 0 ]] && prompt_setcolor_red && echo -n "✘" && symbols=1
-	[[ $UID -eq 0 ]] && prompt_setcolor_yellow && echo -n "⚡" && symbols=1
-	[[ $(jobs -l | wc -l) -gt 0 ]] && prompt_setcolor_lightblue && echo -n "⚙" && symbols=1
-	
-	# print space if one or more symbols are printed
-	[[ -n "$symbols" ]] && echo -n " "
+  local symbols
+  symbols=()
+  [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
+  [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
+  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
+
+  [[ -n "$symbols" ]] && echo -n "$symbols "
 }
 
 ## Main prompt
