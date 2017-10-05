@@ -1,5 +1,5 @@
 # Set to user from user@hostname to hide that part from the prompt when being that user.
-DEFAULT_USER=miw
+DEFAULT_USER=martin
 
 # Disable the default virtualenvwrapper prompt
 export VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -32,7 +32,7 @@ compinit
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/home/miw/.oh-my-zsh
+export ZSH=/home/martin/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -175,3 +175,8 @@ alias pfh=pythonAndHtmlFind
 # Fix dependencies-script, supports multiple project folder structures and also can relink external egg dependencies.
 alias smurf=~/.dependency_fiddling.py
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# NOTE: This must be at the end of the file for sdkman to work
+export SDKMAN_DIR="/home/martin/.sdkman"
+[[ -s "/home/martin/.sdkman/bin/sdkman-init.sh" ]] && source "/home/martin/.sdkman/bin/sdkman-init.sh"

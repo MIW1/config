@@ -18,13 +18,21 @@ Copy = namedtuple('Copy', ['source', 'dest'])
 Download = namedtuple('Download', ['url', 'filename', 'dest'])
 Gitrepo = namedtuple('Gitrepo', ['url', 'reponame', 'sha', 'dest'])
 
-USER_HOME = 'testfolder'  # Exists so it's easy to test everything and install it in another folder than "~/" when developing.
+# FIXME make this folder (testfolder), add ".keep"-files to .gitignore and commit so they don't have to be created all the time.
+#USER_HOME = 'testfolder'  # Exists so it's easy to test everything and install it in another folder than "~/" when developing.
+USER_HOME = '~'  # MUST NOT have trailing slash "/"
+# FIXME make this folder (localsettings), add ".keep"-files to .gitignore and commit so they don't have to be created all the time.
 LOCALSETTINGS = 'localsettings'
+# FIXME make this folder (downloads_and_gitrepos), add ".keep"-files to .gitignore and commit so they don't have to be created all the time.
 DOWNLOADS_AND_GITREPOS = 'downloads_and_gitrepos'
 
 LOCALSETTINGS_GITUSER = '{localsettings}/git_user'.format(localsettings=LOCALSETTINGS)
 
-DOT_VIM_PATH = '%s/dotvim' % USER_HOME  # ~/.vim for real use
+# FIXME make this folder ({USER_HOME}/dotvim), add ".keep"-files to .gitignore and commit so they don't have to be created all the time.
+#DOT_VIM_PATH = '%s/dotvim' % USER_HOME  # ~/.vim for real use
+# FIXME add DOT_VIM_PATH-file to create-folders, because it may not be added by default.
+DOT_VIM_PATH = '%s/.vim' % USER_HOME
+# FIXME add DOT_VIM_FOLDERS-folders to create-folders, because it may not be added by default.
 DOT_VIM_FOLDERS = (
     'autoload',
     'bundle',
@@ -181,19 +189,6 @@ git_repos = [
             dest=DOWNLOADS_AND_GITREPOS),
 ]
 
-NÄSTA GÅNG:
-    Fixa de vim-grejer som saknas. jämför testfolder och .vim.
-    tree -L 2
-
-    Efter det är det nog dags att verifiera att allt jag gjort hittills funkar bra.
-    Dvs kopiera undan det som ska säkerhetskopieras, och sedan kör uninstall följt av install.
-    Om allt sånt funkar har jag ju en MVP igång.
-
-    Sedan är det väl att fortsätta beta av saker härifrån listan.
-    Uppdatera enkelt vore sjukt smidigt.
-
-    Att se över om inte det är några fler lokala settings (det som nämns i doc-strängen nedan) är också på sin plats.
-
 # TODO Make a script that goes through all git-repos and updates them, and syncs new sha:s to the repo config.
 #      That way it's easy to keep things up-to-date, and there's a log of what things has been updated.
 #      Probably good to make as an option, "install" / "uninstall" / "gitupdates".
@@ -241,6 +236,7 @@ DEFAULT_USER=miw
 ### Code
 
 def main(args):
+    # TODO Have an all-but-symlink-task and an symlink-only-task seems like good ideas for debugging etc
     if args.task == 'install':
         install()
     else:
