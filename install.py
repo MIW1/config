@@ -12,6 +12,15 @@ def strip_dotgit(reponame):
     """Remove/strip the .git part from a repo name"""
     return os.path.basename(reponame)
 
+# TODO a step should create this file (if it doesn't exist).
+"""
+cat /etc/zsh-config-scripts-defaultuser 
+# Used by the custom zsh-config to know what the default user is for loading the correct settings and configs.
+export DEFAULT_USER=user-name-goes-here
+"""
+
+
+
 ### Configuration
 Symlink = namedtuple('Symlink', ['source', 'dest'])
 Copy = namedtuple('Copy', ['source', 'dest'])
@@ -47,7 +56,7 @@ POWERLINE_FONTS = 'powerline_fonts.git'
 PATHOGEN_VIM = 'pathogen-vim.git'
 CTRLP_VIM = 'ctrlp-vim.git'
 EMMET_VIM = 'emmet-vim.git'
-JEDI_VIM = 'jedi-vim.git'
+JEDI_VIM = 'jedi-vim.git'  # FIXME something goes wrong with this installation, something is not setup properly by default. Have not done any digging but see issue in new envs.
 NERDTREE_VIM = 'nerdtree.git'
 SYNTASTIC_VIM = 'syntastic.git'
 AIRLINE_VIM = 'vim-airline.git'
