@@ -114,7 +114,7 @@ export PYTHONDONTWRITEBYTECODE=pretty_please
 # Less options
 # Tab stop 4 instead of default 8
 # Preserve grep colors in
-alias less='less -x4 -R'
+alias less='less -x4 -R -i'
 
 # Always list PID for jobs command
 alias jobs='jobs -l'
@@ -142,8 +142,8 @@ gitCommit() {
 alias gco=gitCommit
 alias gb='git branch'
 alias gs='git status'
-alias gl='git tre'
-alias glf='git tref'
+alias gl='git l'
+alias glf='git lf'
 alias ga='git add'
 alias gch='git checkout'
 
