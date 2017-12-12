@@ -1,6 +1,9 @@
 [include]
     path = ~/.localsettings/git_user  # Contains user settings
 
+[pull]
+	rebase = true
+
 [push]
     default = current
 
@@ -9,6 +12,9 @@
     pager = less -FX
     excludesfile = ~/.gitignore
     excludesfile = *.pyc
+
+[log]
+	date = local
 
 # make git commands show colors
 [color]
@@ -54,15 +60,17 @@
     # sometimes it's nice to just do a quick text diff, not using meld (or other graphical tool)
     difft = diff --no-ext-diff
     # compact git log with relative time and usernames
-    l = log -5 --branches --pretty=format:'%h -%d %s  (%cn %cr)'
+    l = log --branches --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph -8
     # compact git log with relative time and usernames, full log (not just latest X posts)
-    lf = log --branches --pretty=format:'%h -%d %s  (%cn %cr)'
+    lf = log --branches --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph
+	# dipsplay a limited amount of branches in the graph, 
+	ld = log --oneline --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph
     # compact abbrev log for easy browsing of history
     la = log --stat --abbrev-commit
-    # shows revision tree in console
-    tre = log --branches --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph -8
-    # show full revision tree in console
-    tref = log --branches --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph
+
+
+	# git clone with .git extension
+	clon = "!sh -c 'git clone $1 ${1##*/}'" -
 
 
     # take back files from stage area: git unstage <optional file or everything>
