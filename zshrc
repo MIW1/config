@@ -1,29 +1,7 @@
-#### LOCAL MACHINE ALIASES AND SETTINGS
-# Place custom things related to machine / environment here.
-# E.g. Aliases for a specific project, environment variables.
-
 # Set to user from user@hostname to hide that part from the prompt when being that user.
 source /etc/zsh-config-scripts-defaultuser  # Should _only_ contain DEFAULT_USER, e.g. export DEFAULT_USER=foobar
 DEFAULT_USER_HOME=/home/$DEFAULT_USER
 
-# Load 
-for machineCustomConfigFile in ${DEFAULT_USER_HOME}/.localsettings/*.sh; do
-	source $machineCustomConfigFile
-done
-
-#### LOCAL MACHINE ALIASES AND SETTINGS END
-
-
-# Disable the default virtualenvwrapper prompt
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-
-# Enable virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh
-
-# Node version manager.
-# https://github.com/creationix/nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This load nvm
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.zsh_history
@@ -35,7 +13,7 @@ bindkey -e
 
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/miw/.zshrc'
+zstyle :compinstall filename "$DEFAULT_USER_HOME/.zshrc"
 
 autoload -Uz compinit
 compinit
@@ -45,7 +23,7 @@ compinit
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/home/martin/.oh-my-zsh
+export ZSH=$DEFAULT_USER_HOME/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -95,9 +73,6 @@ plugins=(git zsh-autosuggestions pip django pass)
 
 source $ZSH/oh-my-zsh.sh
 
-# Prevent Python from writing bytecode (.pyc) files.
-export PYTHONDONTWRITEBYTECODE=pretty_please
-
 # User configuration
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
@@ -110,6 +85,42 @@ export PYTHONDONTWRITEBYTECODE=pretty_please
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 
+
+#### LOCAL MACHINE ALIASES AND SETTINGS
+# Place custom things related to machine / environment here.
+# E.g. Aliases for a specific project, environment variables.
+
+# Load 
+for machineCustomConfigFile in ${DEFAULT_USER_HOME}/.localsettings/*.sh; do
+	source $machineCustomConfigFile
+done
+
+#### LOCAL MACHINE ALIASES AND SETTINGS END
+
+
+# Prevent Python from writing bytecode (.pyc) files.
+export PYTHONDONTWRITEBYTECODE=pretty_please
+
+# Disable the default virtualenvwrapper prompt
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# Enable virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh
+
+# Node version manager.
+# https://github.com/creationix/nvm
+export NVM_DIR="$DEFAULT_USER_HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This load nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Cargo (RUST) bin - e.g. used by ripgrep
+export PATH=${PATH}:${DEFAULT_USER_HOME}/.cargo/bin
+
+# Java SDKMAN init
+export SDKMAN_DIR="$DEFAULT_USER_HOME/.sdkman"
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+
+
 ############ Aliases
 # Less options
 # Tab stop 4 instead of default 8
@@ -120,7 +131,7 @@ alias less='less -x4 -R -i'
 alias jobs='jobs -l'
 
 # Shortcuts are nice.
-PROJ='/home/miw/projects'
+PROJ="$DEFAULT_USER_HOME/projects"
 alias proj='cd $PROJ'
 
 # JSON formatting
@@ -187,9 +198,3 @@ alias pfh=pythonAndHtmlFind
 
 # Fix dependencies-script, supports multiple project folder structures and also can relink external egg dependencies.
 alias smurf=~/.dependency_fiddling.py
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-# NOTE: This must be at the end of the file for sdkman to work
-export SDKMAN_DIR="/home/martin/.sdkman"
-[[ -s "/home/martin/.sdkman/bin/sdkman-init.sh" ]] && source "/home/martin/.sdkman/bin/sdkman-init.sh"
