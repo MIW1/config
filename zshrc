@@ -1,5 +1,18 @@
+#### LOCAL MACHINE ALIASES AND SETTINGS
+# Place custom things related to machine / environment here.
+# E.g. Aliases for a specific project, environment variables.
+
 # Set to user from user@hostname to hide that part from the prompt when being that user.
-DEFAULT_USER=martin
+source /etc/zsh-config-scripts-defaultuser  # Should _only_ contain DEFAULT_USER, e.g. export DEFAULT_USER=foobar
+DEFAULT_USER_HOME=/home/$DEFAULT_USER
+
+# Load 
+for machineCustomConfigFile in ${DEFAULT_USER_HOME}/.localsettings/*.sh; do
+	source $machineCustomConfigFile
+done
+
+#### LOCAL MACHINE ALIASES AND SETTINGS END
+
 
 # Disable the default virtualenvwrapper prompt
 export VIRTUAL_ENV_DISABLE_PROMPT=1
