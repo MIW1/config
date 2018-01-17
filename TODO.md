@@ -1,3 +1,7 @@
+Active/prioritized tasks (top highest prio, bottom lowest prio):
+    X - Create "${USER_HOME}/.vim" and child directories if they don't exist.
+        X - Create "${USER_HOME}/.vim" if it doesn't exist.
+        X - Create list of folders in DOT_VIM_FOLDERS if they don't exist.
 
 
 Backlog:
@@ -10,10 +14,6 @@ Backlog:
         - Store in: ~/.localsettings/git_user
         - Prompt to insert name.
         - Prompt to insert email.
-
-    - Create "${USER_HOME}/.vim" and child directories if they don't exist.
-        - Create "${USER_HOME}/.vim" if it doesn't exist.
-        - Create list of folders in DOT_VIM_FOLDERS if they don't exist.
 
     - Jedi vim installation is incorrect.
         - Investigate what in the setup is wrong.

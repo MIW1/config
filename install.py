@@ -284,6 +284,10 @@ def _create_folders():
         else:
             log.debug(exists_message)
 
+    _create_folder(folder=DOT_VIM_PATH,
+                   created_message="Creating .vim folder {folder}".format(folder=DOT_VIM_PATH),
+                   exists_message="Folder {folder} exists, skipping creation".format(folder=DOT_VIM_PATH))
+
     for vimfolder in DOT_VIM_FOLDERS:
         folder = '{vimpath}/{foldername}'.format(vimpath=DOT_VIM_PATH, foldername=vimfolder)
         _create_folder(folder=folder,
