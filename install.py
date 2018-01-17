@@ -206,7 +206,6 @@ git_repos = [
 #     Answer: Ignore for now, would be nice, but nowhere to easily test it.
 #             Fix in the future when it's needed.
 
-# XXX anything more to do?
 # TODO config changes, such as insert git email & username, more stuff?
 '''
  cat ~/.zprofile
@@ -273,16 +272,6 @@ def install():
     _clone_gitrepos()
 
     _create_symlinks()
-    #NÄSTA GÅNG.
-    #    X PEKA UT EN FAKAD .vim-katalog.
-    #    X FIXA SÅ ALLA KATALOGER I VIM-KATALOG-TUPLEN SKAPAS UPP.
-    #    OBS! Dessa kataloger skall inte kastas bort, de kan råka ta bort en massa annat så de får vara så länge...
-    #        Eller kanske göra en koll sist i avinstalltionen. OM det finns andra filer kvar i en .vim-katalog så tas de inte bort.
-    #        Men om katalogen är tom kan den tas bort.
-    #    X Också gör om "~" till någon bas-setting. så kan jag lättare installera och avinstallera allt i en katalog där jag inte
-    #    X förstör för mig själv.
-    #    X DÄREFTER SYMLÄNKA IN ALLA REPON.
-    #    GÖR EN VALIDERING ATT vim LÄSER SYMLÄNKAR KORREKT. DÄREFTER RÄDDA BARA UNDAN ORIGINALKATALOGERNA OCH
 
 
 def _create_folders():
