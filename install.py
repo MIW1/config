@@ -27,12 +27,9 @@ Copy = namedtuple('Copy', ['source', 'dest'])
 Download = namedtuple('Download', ['url', 'filename', 'dest'])
 Gitrepo = namedtuple('Gitrepo', ['url', 'reponame', 'sha', 'dest'])
 
-# FIXME make this folder (testfolder), add ".keep"-files to .gitignore and commit so they don't have to be created all the time.
-#USER_HOME = 'testfolder'  # Exists so it's easy to test everything and install it in another folder than "~/" when developing.
-USER_HOME = '~'  # MUST NOT have trailing slash "/"
-# FIXME make this folder (localsettings), add ".keep"-files to .gitignore and commit so they don't have to be created all the time.
+USER_HOME = 'testfolder'  # Exists so it's easy to test everything and install it in another folder than "~/" when developing.
+#USER_HOME = '~'  # MUST NOT have trailing slash "/"
 LOCALSETTINGS = 'localsettings'
-# FIXME make this folder (downloads_and_gitrepos), add ".keep"-files to .gitignore and commit so they don't have to be created all the time.
 DOWNLOADS_AND_GITREPOS = 'downloads_and_gitrepos'
 
 LOCALSETTINGS_GITUSER = '{localsettings}/git_user'.format(localsettings=LOCALSETTINGS)
@@ -289,7 +286,7 @@ def install():
 
 
 def _create_folders():
-    """Create all folders for storing local settings, downloads, gitrepos etc."""
+    """Create all folders that must exist, e.g. '.vim'"""
     def _create_folder(folder, created_message, exists_message):
         """Create a folder. If the folder already exists nothing happens."""
         if not os.path.exists(folder):
@@ -297,18 +294,6 @@ def _create_folders():
             os.mkdir(folder)
         else:
             log.debug(exists_message)
-
-    _create_folder(folder=LOCALSETTINGS,
-                   created_message='Creating localsettings folder "{dir}".'.format(
-                       dir=LOCALSETTINGS),
-                   exists_message='Localsettings folder "{dir}" exists, skipping creation.'.format(
-                       dir=LOCALSETTINGS))
-
-    _create_folder(folder=DOWNLOADS_AND_GITREPOS,
-                   created_message='Creating downloads_and_gitrepos folder "{dir}".'.format(
-                       dir=DOWNLOADS_AND_GITREPOS),
-                   exists_message='Downloads_and_gitrepos folder "{dir}" exists, skipping creation.'.format(
-                       dir=DOWNLOADS_AND_GITREPOS))
 
     for vimfolder in DOT_VIM_FOLDERS:
         folder = '{vimpath}/{foldername}'.format(vimpath=DOT_VIM_PATH, foldername=vimfolder)
