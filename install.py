@@ -22,9 +22,11 @@ USER_HOME = 'testfolder'  # Exists so it's easy to test everything and install i
 #USER_HOME = '~'  # MUST NOT have trailing slash "/"
 LOCALSETTINGS = 'localsettings'
 DOWNLOADS_AND_GITREPOS = 'downloads_and_gitrepos'
-LOCALSETTINGS_GITUSER = '{localsettings}/git_user'.format(localsettings=LOCALSETTINGS)
 #ZSH_CONFIG_DEFAULT_USER_FILE = '/etc/zsh-config-scripts-defaultuser'
 ZSH_CONFIG_DEFAULT_USER_FILE = 'testfolder/zsh-config-scripts-defaultuser'  # xxx testfile
+#GIT_USER_FILE = '{localsettings}/git_user'.format(localsettings=LOCALSETTINGS)
+GIT_USER_FILE = 'testfolder/git_user'  # xxx testfile
+
 
 # FIXME make this folder ({USER_HOME}/dotvim), add ".keep"-files to .gitignore and commit so they don't have to be created all the time.
 #DOT_VIM_PATH = '%s/dotvim' % USER_HOME  # ~/.vim for real use
@@ -255,11 +257,11 @@ def parseargs():
 
 
 def install():
-    _update_zsh_config_default_user_file()
+    _create_or_update_zsh_config_default_user_file()
+
+    _create_or_update_git_user_file()
 
     _create_folders()
-
-    _create_localsettings()
 
     _download_files()
 
@@ -287,18 +289,6 @@ def _create_folders():
         _create_folder(folder=folder,
                        created_message="Creating vim folder {folder}".format(folder=folder),
                        exists_message="Vim folder {folder} exists, skipping creation".format(folder=folder))
-
-
-def _create_localsettings():
-    if not os.path.exists(LOCALSETTINGS_GITUSER):
-        name = input("git setting user.name: ")
-        email = input("git setting user.email: ")
-        with open(LOCALSETTINGS_GITUSER, "w") as f:
-            f.write("[user]\n")
-            f.write("    name = {name}\n".format(name=name))
-            f.write("    email = {email}".format(email=email))
-    else:
-        log.info('Settings file {file} exists, not querying user for data.'.format(file=LOCALSETTINGS_GITUSER))
 
 
 def _download_files():
@@ -353,7 +343,7 @@ def _create_symlinks():
     log.debug('All symlinks created.')
 
 
-def _update_zsh_config_default_user_file():
+def _create_or_update_zsh_config_default_user_file():
     """
     Create the file with default user used in some scripts.
 
@@ -389,6 +379,42 @@ def _update_zsh_config_default_user_file():
                     shell=True)
 
 
+def _create_or_update_git_user_file():
+    """
+    Create the file with name and email, that is import from the gitconfig-file.
+    """
+    # Default value reading.
+    default_name = None
+    default_email = None
+    if os.path.exists(GIT_USER_FILE):
+        with open(GIT_USER_FILE, 'r') as f:
+            done = False
+            while not done:
+                line = f.readline()
+                if len(line) == 0:
+                    done = True
+                if 'name' in line:
+                    default_name = line.rstrip().split("= ")[1]
+                if 'email' in line:
+                    default_email = line.rstrip().split("= ")[1]
+
+    name = ""
+    while len(name) == 0:
+        name = input("git setting user.name{default}: ".format(default="" if default_name is None else ' [' + default_name + ']')).rstrip()
+        if default_name is not None and len(name) == 0:
+            name = default_name
+    email = ""
+    while len(email) == 0:
+        email = input("git setting user.email{default}: ".format(default="" if default_email is None else ' [' + default_email + ']')).rstrip()
+        if default_email is not None and len(email) == 0:
+            email = default_email
+
+    with open(GIT_USER_FILE, "w") as f:
+        f.write("[user]\n")
+        f.write("    name = {name}\n".format(name=name))
+        f.write("    email = {email}".format(email=email))
+
+
 def uninstall():
     log.debug('Deleting symlinks.')
 
@@ -401,7 +427,7 @@ def uninstall():
         shutil.rmtree(DOWNLOADS_AND_GITREPOS)
     if os.path.exists(ZSH_CONFIG_DEFAULT_USER_FILE):
         log.info('Deleting {file}.'.format(dir=ZSH_CONFIG_DEFAULT_USER_FILE))
-        subprocess.call('sudo rm {file}'.format(file=ZSH_CONFIG_DEFAULT_USER_FILE)
+        subprocess.call('sudo rm {file}'.format(file=ZSH_CONFIG_DEFAULT_USER_FILE))
 
     for symlink in symlinks:
         link = os.path.expanduser(symlink.dest)
