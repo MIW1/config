@@ -12,15 +12,6 @@ def strip_dotgit(reponame):
     """Remove/strip the .git part from a repo name"""
     return os.path.basename(reponame)
 
-# TODO a step should create this file (if it doesn't exist).
-"""
-cat /etc/zsh-config-scripts-defaultuser 
-# Used by the custom zsh-config to know what the default user is for loading the correct settings and configs.
-export DEFAULT_USER=user-name-goes-here
-"""
-
-
-
 ### Configuration
 Symlink = namedtuple('Symlink', ['source', 'dest'])
 Copy = namedtuple('Copy', ['source', 'dest'])
@@ -31,8 +22,9 @@ USER_HOME = 'testfolder'  # Exists so it's easy to test everything and install i
 #USER_HOME = '~'  # MUST NOT have trailing slash "/"
 LOCALSETTINGS = 'localsettings'
 DOWNLOADS_AND_GITREPOS = 'downloads_and_gitrepos'
-
 LOCALSETTINGS_GITUSER = '{localsettings}/git_user'.format(localsettings=LOCALSETTINGS)
+#ZSH_CONFIG_DEFAULT_USER_FILE = '/etc/zsh-config-scripts-defaultuser'
+ZSH_CONFIG_DEFAULT_USER_FILE = 'testfolder/zsh-config-scripts-defaultuser'  # xxx testfile
 
 # FIXME make this folder ({USER_HOME}/dotvim), add ".keep"-files to .gitignore and commit so they don't have to be created all the time.
 #DOT_VIM_PATH = '%s/dotvim' % USER_HOME  # ~/.vim for real use
@@ -263,6 +255,8 @@ def parseargs():
 
 
 def install():
+    _update_zsh_config_default_user_file()
+
     _create_folders()
 
     _create_localsettings()
@@ -359,16 +353,55 @@ def _create_symlinks():
     log.debug('All symlinks created.')
 
 
+def _update_zsh_config_default_user_file():
+    """
+    Create the file with default user used in some scripts.
+
+    cat /etc/zsh-config-scripts-defaultuser
+    # Used by the custom zsh-config to know what the default user is for loading the correct settings and configs.
+    export DEFAULT_USER=user-name-goes-here
+    """
+    # Default value reading.
+    if os.path.exists(ZSH_CONFIG_DEFAULT_USER_FILE):  # todo test that this works fine when the file does not exist also!
+        with open(ZSH_CONFIG_DEFAULT_USER_FILE, "r") as f:
+            # Discard comment lines
+            done = False
+            while not done:
+                line = f.readline()
+                done = not line.startswith("#")
+            defaultvalue = line.rstrip().split("=")[1]  # Remove export part, keep only name.
+    else:
+        defaultvalue = None
+
+    # Get user input
+    please_input_default_user_text = "Insert default user, for $DEFAULT_USER{default}: ".format(
+        default="" if defaultvalue is None else ' [' + defaultvalue + ']')
+    default_user = ""
+    while len(default_user) == 0:
+        default_user = input(please_input_default_user_text).rstrip()
+        if defaultvalue is not None and len(default_user) == 0:
+            default_user = defaultvalue
+
+    # Write file
+    filetext = "# Used by the custom zsh-config to know what the default user is for loading the correct settings and configs.\n" \
+        "export DEFAULT_USER={user}".format(user=default_user)
+    subprocess.call("sudo echo '{filetext}' > {configfile}".format(filetext=filetext, configfile=ZSH_CONFIG_DEFAULT_USER_FILE),
+                    shell=True)
+
+
 def uninstall():
     log.debug('Deleting symlinks.')
 
     # TODO ask user if the localsettingsfolder & downloadsfolder should be deleted also? Or kill it, unless asked to keep it?
     if os.path.exists(LOCALSETTINGS):
-        log.info('Deleting {dir} including its content'.format(dir=LOCALSETTINGS))
+        log.info('Deleting {dir} including its content.'.format(dir=LOCALSETTINGS))
         shutil.rmtree(LOCALSETTINGS)
     if os.path.exists(DOWNLOADS_AND_GITREPOS):
-        log.info('Deleting {dir} including its content'.format(dir=DOWNLOADS_AND_GITREPOS))
+        log.info('Deleting {dir} including its content.'.format(dir=DOWNLOADS_AND_GITREPOS))
         shutil.rmtree(DOWNLOADS_AND_GITREPOS)
+    if os.path.exists(ZSH_CONFIG_DEFAULT_USER_FILE):
+        log.info('Deleting {file}.'.format(dir=ZSH_CONFIG_DEFAULT_USER_FILE))
+        subprocess.call('sudo rm {file}'.format(file=ZSH_CONFIG_DEFAULT_USER_FILE)
 
     for symlink in symlinks:
         link = os.path.expanduser(symlink.dest)
