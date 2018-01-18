@@ -1,14 +1,12 @@
 Active/prioritized tasks (top highest prio, bottom lowest prio):
-    X - Create "${USER_HOME}/.vim" and child directories if they don't exist.
-        X - Create "${USER_HOME}/.vim" if it doesn't exist.
-        X - Create list of folders in DOT_VIM_FOLDERS if they don't exist.
+    X - Create the /etc/zsh-config-scripts-defaultuser file (if it doesn't exist).
+        X - Create the file from user input.
+        X - Check to use the existing files value as default value, if file exists.
+        X - Insert comment in written message.
+        X - Handle comments in file.
 
 
 Backlog:
-
-    - Create the /etc/zsh-config-scripts-defaultuser file (if it doesn't exist).
-        - Create the file from user input.
-        - Check to use the existing files value as default value, if file exists.
 
     - GIT email and name prompt.
         - Store in: ~/.localsettings/git_user
