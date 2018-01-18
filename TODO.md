@@ -5,13 +5,13 @@ Active/prioritized tasks (top highest prio, bottom lowest prio):
         X - Insert comment in written message.
         X - Handle comments in file.
 
+    X - GIT email and name prompt.
+        X - Store in: ~/.localsettings/git_user
+        X - Prompt to insert name.
+        X - Prompt to insert email.
+
 
 Backlog:
-
-    - GIT email and name prompt.
-        - Store in: ~/.localsettings/git_user
-        - Prompt to insert name.
-        - Prompt to insert email.
 
     - Jedi vim installation is incorrect.
         - Investigate what in the setup is wrong.
