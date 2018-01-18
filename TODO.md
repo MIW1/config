@@ -1,14 +1,13 @@
 Active/prioritized tasks (top highest prio, bottom lowest prio):
-    X - Create the /etc/zsh-config-scripts-defaultuser file (if it doesn't exist).
-        X - Create the file from user input.
-        X - Check to use the existing files value as default value, if file exists.
-        X - Insert comment in written message.
-        X - Handle comments in file.
 
-    X - GIT email and name prompt.
-        X - Store in: ~/.localsettings/git_user
-        X - Prompt to insert name.
-        X - Prompt to insert email.
+    - See if configuration is better suited to be moved to a separate file.
+      Just to keep things more readable and feeling less entangled.
+
+    - Clean up dead or commented out code.
+
+    - Add flag to use real settings or test settings?
+        * Could ease testing a bit.
+        * Could have a few values in the file, and read rest from settings file.
 
 
 Backlog:
@@ -20,11 +19,6 @@ Backlog:
     - Perhaps extend the gitrepo-tuples with symlink data,
       to keep all config for a gitrepo together.
         * Evaluate and see if worth it.
-
-    - Clean up dead or commented out code.
-
-    - See if configuration is better suited to be moved to a separate file.
-      Just to keep things more readable and feeling less entangled.
 
     - Make a script that goes through all git-repos and updates them,
       and syncs new sha:s to the repo config.
