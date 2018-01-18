@@ -28,11 +28,8 @@ ZSH_CONFIG_DEFAULT_USER_FILE = 'testfolder/zsh-config-scripts-defaultuser'  # xx
 GIT_USER_FILE = 'testfolder/git_user'  # xxx testfile
 
 
-# FIXME make this folder ({USER_HOME}/dotvim), add ".keep"-files to .gitignore and commit so they don't have to be created all the time.
 #DOT_VIM_PATH = '%s/dotvim' % USER_HOME  # ~/.vim for real use
-# FIXME add DOT_VIM_PATH-file to create-folders, because it may not be added by default.
-DOT_VIM_PATH = '%s/.vim' % USER_HOME
-# FIXME add DOT_VIM_FOLDERS-folders to create-folders, because it may not be added by default.
+DOT_VIM_PATH = '{user_home}/.vim'.format(user_home=USER_HOME)
 DOT_VIM_FOLDERS = (
     'autoload',
     'bundle',
