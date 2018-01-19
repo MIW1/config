@@ -4,6 +4,8 @@ Active/prioritized tasks (top highest prio, bottom lowest prio):
           and everything just sits in a flat directory.
         - Fix a new structure (copyfiles only!!!!)
         - Move current files to new structure (delete old).
+            X - Moved and updated download_repo
+            - Update install.py for download_repo.
             - Update all symlinks currently in use...
             - Above step would benefit from symlink-only-task described in other task.
 
