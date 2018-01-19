@@ -22,6 +22,7 @@ USER_HOME = 'dummy-install-folder-for-testing-purposes'  # Exists so it's easy t
 #USER_HOME = '~'  # MUST NOT have trailing slash "/"
 LOCALSETTINGS = 'machine-specific-files/localsettings'
 DOWNLOADS_AND_GITREPOS = 'machine-specific-files/downloads_and_gitrepos'
+CONFIG_DIR = 'configs-and-scripts-to-install'
 #ZSH_CONFIG_DEFAULT_USER_FILE = '/etc/zsh-config-scripts-defaultuser'
 ZSH_CONFIG_DEFAULT_USER_FILE = 'dummy-install-folder-for-testing-purposes/zsh-config-scripts-defaultuser'  # xxx testfile
 #GIT_USER_FILE = '{localsettings}/git_user'.format(localsettings=LOCALSETTINGS)
@@ -56,19 +57,19 @@ PYTHON_INDENT_VIM = 'python-indent.vim'
 LESS_SYNTAX_VIM = 'less-syntax.vim'
 
 symlinks = [
-    Symlink(source='bashrc',
+    Symlink(source='{cfgdir}/bashrc'.format(cfgdir=CONFIG_DIR),
             dest='{home}/.bashrc'.format(home=USER_HOME)),
-    Symlink(source='gitconfig',
+    Symlink(source='{cfgdir}/gitconfig'.format(cfgdir=CONFIG_DIR),
             dest='{home}/.gitconfig'.format(home=USER_HOME)),
-    Symlink(source='git-meld.py',
+    Symlink(source='{cfgdir}/git-meld.py'.format(cfgdir=CONFIG_DIR),
             dest='{home}/.git-meld.py'.format(home=USER_HOME)),
-    Symlink(source='gvimrc',
+    Symlink(source='{cfgdir}/gvimrc'.format(cfgdir=CONFIG_DIR),
             dest='{home}/.gvimrc'.format(home=USER_HOME)),
-    Symlink(source='vimrc',
+    Symlink(source='{cfgdir}/vimrc'.format(cfgdir=CONFIG_DIR),
             dest='{home}/.vimrc'.format(home=USER_HOME)),
-    Symlink(source='zshrc',
+    Symlink(source='{cfgdir}/zshrc'.format(cfgdir=CONFIG_DIR),
             dest='{home}/.zshrc'.format(home=USER_HOME)),
-    Symlink(source='zshrc.zni',
+    Symlink(source='{cfgdir}/zshrc.zni'.format(cfgdir=CONFIG_DIR),
             dest='{home}/.zshrc.zni'.format(home=USER_HOME)),
 
     Symlink(source=LOCALSETTINGS,
@@ -111,8 +112,7 @@ symlinks = [
     Symlink(source='{downloads}/{airline_themesrepo}'.format(downloads=DOWNLOADS_AND_GITREPOS, airline_themesrepo=AIRLINE_THEMES_VIM),
             dest='{vimpath}/bundle/{airline_themesvim}'.format(vimpath=DOT_VIM_PATH, airline_themesvim=strip_dotgit(AIRLINE_THEMES_VIM))),
 
-    Symlink(source='{downloads}/{pythonsyntax}/syntax/python.vim'.format(downloads=DOWNLOADS_AND_GITREPOS,
-                                                                                           pythonsyntax=PYTHON_SYNTAX_VIM),
+    Symlink(source='{downloads}/{pythonsyntax}/syntax/python.vim'.format(downloads=DOWNLOADS_AND_GITREPOS, pythonsyntax=PYTHON_SYNTAX_VIM),
             dest='{vimpath}/syntax/python.vim'.format(vimpath=DOT_VIM_PATH)),
 ]
 

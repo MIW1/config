@@ -1,13 +1,13 @@
 Active/prioritized tasks (top highest prio, bottom lowest prio):
-    - Restructure things in the repo, to make it easier to find stuff.
+    X - Restructure things in the repo, to make it easier to find stuff.
         * E.g. some scripts are to be installed, some are for maintenance purposes
           and everything just sits in a flat directory.
-        - Fix a new structure (copyfiles only!!!!)
-        - Move current files to new structure (delete old).
+        X - Fix a new structure (copyfiles only!!!!)
+        X - Move current files to new structure (delete old).
             X - Moved and updated download_repo
-            - Update install.py for download_repo.
-            - Update all symlinks currently in use...
-            - Above step would benefit from symlink-only-task described in other task.
+            X - Update install.py for download_repo.
+            X - Update all symlinks currently in use...
+            S- Above step would benefit from symlink-only-task described in other task.
 
     - See if configuration is better suited to be moved to a separate file.
       Just to keep things more readable and feeling less entangled.
