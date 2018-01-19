@@ -18,14 +18,14 @@ Copy = namedtuple('Copy', ['source', 'dest'])
 Download = namedtuple('Download', ['url', 'filename', 'dest'])
 Gitrepo = namedtuple('Gitrepo', ['url', 'reponame', 'sha', 'dest'])
 
-USER_HOME = 'testfolder'  # Exists so it's easy to test everything and install it in another folder than "~/" when developing.
+USER_HOME = 'dummy-install-folder-for-testing-purposes'  # Exists so it's easy to test everything and install it in another folder than "~/" when developing.
 #USER_HOME = '~'  # MUST NOT have trailing slash "/"
 LOCALSETTINGS = 'localsettings'
 DOWNLOADS_AND_GITREPOS = 'downloads_and_gitrepos'
 #ZSH_CONFIG_DEFAULT_USER_FILE = '/etc/zsh-config-scripts-defaultuser'
-ZSH_CONFIG_DEFAULT_USER_FILE = 'testfolder/zsh-config-scripts-defaultuser'  # xxx testfile
+ZSH_CONFIG_DEFAULT_USER_FILE = 'dummy-install-folder-for-testing-purposes/zsh-config-scripts-defaultuser'  # xxx testfile
 #GIT_USER_FILE = '{localsettings}/git_user'.format(localsettings=LOCALSETTINGS)
-GIT_USER_FILE = 'testfolder/git_user'  # xxx testfile
+GIT_USER_FILE = 'dummy-install-folder-for-testing-purposes/git_user'  # xxx testfile
 
 
 #DOT_VIM_PATH = '%s/dotvim' % USER_HOME  # ~/.vim for real use

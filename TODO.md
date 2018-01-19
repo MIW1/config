@@ -1,4 +1,11 @@
 Active/prioritized tasks (top highest prio, bottom lowest prio):
+    - Restructure things in the repo, to make it easier to find stuff.
+        * E.g. some scripts are to be installed, some are for maintenance purposes
+          and everything just sits in a flat directory.
+        - Fix a new structure (copyfiles only!!!!)
+        - Move current files to new structure (delete old).
+            - Update all symlinks currently in use...
+            - Above step would benefit from symlink-only-task described in other task.
 
     - See if configuration is better suited to be moved to a separate file.
       Just to keep things more readable and feeling less entangled.
