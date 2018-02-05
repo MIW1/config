@@ -1,0 +1,18 @@
+/*
+ * Do not remove the @namespace line -- it's required for correct functioning
+ */
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/*
+ * TreeStyleTabs solutions to remove tabs
+ *
+ * Solution by: https://news.ycombinator.com/item?id=15343940 */
+#TabsToolbar {
+  visibility: collapse !important;
+}
+
+/* Remove sidebar header */
+#sidebar-header {
+	visibility: collapse !important;
+}
+
