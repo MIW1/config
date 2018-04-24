@@ -99,5 +99,8 @@
     # push a branch to remote and set the upstream
     pub     = push -u origin
 
+	# force push alias, reduces risk of running push with flags unintentionally.
+	forcepush = push -f
+
     # diff against branchpoint from develop
     ddev    = diff develop...
