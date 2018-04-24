@@ -90,9 +90,6 @@
     devreb  = rebase develop
     ireb    = rebase -i
 
-    # pull and rebase - avoid all those merge commits.
-    pu      = pull --rebase
-
     # merge without fastforward
     mnff    = merge --no-ff
 
