@@ -198,3 +198,12 @@ alias pfh=pythonAndHtmlFind
 
 # Fix dependencies-script, supports multiple project folder structures and also can relink external egg dependencies.
 alias smurf=~/.dependency_fiddling.py
+
+# Make gradle work everywhere by trying for a gradle-wrapper first, slightly more seamless usage this way. Assumes sdkman to work great.
+gradle () {
+	if [ -x "gradlew" ]; then
+		./gradlew "$@"
+	else
+		"$GRADLE_HOME"/bin/gradle "$@"
+	fi
+}
