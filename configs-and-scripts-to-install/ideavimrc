@@ -1,0 +1,38 @@
+source ~/.vimrc
+
+" REMEMBER: All ":action"-commands must have a trailing <CR> or they won't execute.
+
+
+" Custom idea/intellij binds
+
+" File/implementation navigation
+map ! :action GotoImplementation<CR>
+map " :action VimGotoDeclaration<CR>
+map # :action Back<CR>
+map $ :action Forward<CR>
+
+" Idea tools and views
+" Override CtrlP since it doesn't exist
+map <C-p> :action SearchEverywhere<CR>
+map +     :action HideSideWindows<CR>
+map <C-e> :action ActivateStructureToolWindow<CR>
+map <C-r> :action ActivateRunToolWindow<CR>
+map <C-S-r> :action ActivateDebugToolWindow<CR>
+map <C-t> :action ActivateProjectToolWindow<CR>
+
+
+map <(> :action ShowIntentionActions<CR>	
+map ) :action Refactorings.QuickListPopupAction<CR>
+map = :action SelectInProjectView<CR>
+
+" Java find usage, hierarchy etc
+map [ :action FindUsages<CR>
+map <A-h> :action TypeHierarchy<CR>
+map <A-j> :action CallHierarchy<CR>
+
+" Debugger
+" These didn't work last time I tried, not sure why since typing the commands
+" appear to work.
+"map 3 :action StepInto<CR>
+"map 4 :action StepOver<CR>
+"map 5 :action StepOut<CR>
