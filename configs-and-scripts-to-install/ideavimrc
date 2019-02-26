@@ -19,7 +19,7 @@ map <C-e> :action ActivateStructureToolWindow<CR>
 map <C-r> :action ActivateRunToolWindow<CR>
 map <C-S-r> :action ActivateDebugToolWindow<CR>
 map <C-t> :action ActivateProjectToolWindow<CR>
-
+map <A-F11> :action ToggleDistractionFreeMode<CR>
 
 map <(> :action ShowIntentionActions<CR>	
 map ) :action Refactorings.QuickListPopupAction<CR>

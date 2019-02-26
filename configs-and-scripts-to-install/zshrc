@@ -154,6 +154,7 @@ alias gco=gitCommit
 alias gb='git branch'
 alias gs='git status'
 alias gl='git l'
+alias gsl='gs && gl'  # Convenience since this combo is used so often.
 alias glf='git lf'
 alias ga='git add'
 alias gch='git checkout'

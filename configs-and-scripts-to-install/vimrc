@@ -110,6 +110,10 @@ au! BufRead,BufNewFile *.scss setfiletype scss
 " Less
 au BufNewFile,BufRead *.less set filetype=less
 
+" Yaml
+au BufNewFile,BufRead *.yaml,*.yml setf yaml
+autocmd FileType yaml set smarttab | set expandtab | set softtabstop=2 | set shiftwidth=2 | set tabstop=2
+
 " Improve completion menu
 set completeopt=longest,menuone
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"

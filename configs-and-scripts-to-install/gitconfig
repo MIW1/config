@@ -2,7 +2,7 @@
     path = ~/.localsettings/git_user  # Contains user settings
 
 [pull]
-	rebase = true
+    rebase = true
 
 [push]
     default = current
@@ -14,7 +14,7 @@
     excludesfile = *.pyc
 
 [log]
-	date = local
+    date = local
 
 # make git commands show colors
 [color]
@@ -63,14 +63,14 @@
     l = log --branches --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph -8
     # compact git log with relative time and usernames, full log (not just latest X posts)
     lf = log --branches --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph
-	# dipsplay a limited amount of branches in the graph, 
-	ld = log --oneline --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph
+    # dipsplay a limited amount of branches in the graph, 
+    ld = log --oneline --pretty=format:'%C(auto)%h -%d %s  %Cblue%cn %cr' --graph
     # compact abbrev log for easy browsing of history
     la = log --stat --abbrev-commit
 
 
-	# git clone with .git extension
-	clon = "!sh -c 'git clone $1 ${1##*/}'" -
+    # git clone with .git extension
+    clon = "!sh -c 'git clone $1 ${1##*/}'" -
 
 
     # take back files from stage area: git unstage <optional file or everything>
@@ -99,8 +99,8 @@
     # push a branch to remote and set the upstream
     pub     = push -u origin
 
-	# force push alias, reduces risk of running push with flags unintentionally.
-	forcepush = push -f
+    # force push alias, reduces risk of running push with flags unintentionally.
+    forcepush = push -f
 
     # diff against branchpoint from develop
     ddev    = diff develop...
